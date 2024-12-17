@@ -1,16 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: obenhamm <obenhamm@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/01 17:25:54 by obenhamm          #+#    #+#             */
-/*   Updated: 2024/12/16 23:11:39 by obenhamm         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#include "get_next_line.h"
+
+#include "get_next_line_bonus.h"
 
 char	*ft_get_line(int fd, char *line)
 {
@@ -95,15 +85,15 @@ char	*ft_get_next_line(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char			*line;
+	static char			*line[1024];
 	char				*next_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1024)
 		return (NULL);
-	line = ft_get_line(fd, line);
-	if (!line)
+	line[fd] = ft_get_line(fd, line[fd]);
+	if (!line[fd])
 		return (NULL);
-	next_line = ft_get_next_line(line);
-	line = new_line(line);
+	next_line = ft_get_next_line(line[fd]);
+	line[fd] = new_line(line[fd]);
 	return (next_line);
 }
